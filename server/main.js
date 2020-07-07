@@ -6,9 +6,8 @@ app.use(bodyParser.json())
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-/* ALERTAS GENERALES DE APERTURA DE PUERTAS */
+/* ALERTAS GENERALES */
 app.post('/alertas_generales', function(req, res){
-	console.info(req.body);
 	let response = {
 		'userId' : req.body.userId,
 		'housingEstate' : req.body.housingEstate,
@@ -24,7 +23,13 @@ app.get('/', function(req, res){
 });
 
 /* CONEXION AL SOCKET */
-io.on('connection', function (socket){});
+io.on('connection', function (socket){
+	console.info("Coneccion establecida!: " + socket.id);
+	socket.on('disconnect', function(){
+		console.info("Coneccion terminada!: " + socket.id);
+	});
+	
+});
 
 /* SERVIDOR NODE */
 server.listen('25003', function () {
